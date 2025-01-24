@@ -96,6 +96,7 @@ public class TaskManager {
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         epic.getSubtaskIds().add(newId);
+        updateEpic(epic);
         return subtask;
 
     }
@@ -109,6 +110,8 @@ public class TaskManager {
             return subtask;
         }
         subtasks.put(subtask.getId(), subtask);
+        Epic epic = epics.get(subtask.getEpicId());
+        updateEpic(epic);
         return subtask;
     }
 
@@ -178,38 +181,20 @@ public class TaskManager {
     }
 
 
-    public void printTasks() {
-        if (tasks.isEmpty()) {
-            System.out.println("Список задач пуст.");
-        }
-        List<Task> t = new ArrayList<>(tasks.values());
-        System.out.println("Список задач: " + t);
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
-
-    public void printEpics() {
-        List<Epic> e = new ArrayList<>(epics.values());
-        if (epics.isEmpty()) {
-            System.out.println("Список эпиков пуст.");
-        }
-        System.out.println("Список эпиков: " + e);
+    public ArrayList<Subtask> getSubtasks() {
+        return new ArrayList<>(subtasks.values());
     }
 
-
-    public void printSubtasks() {
-        if (subtasks.isEmpty()) {
-            System.out.println("Список подзадач пуст.");
-        }
-        List<Subtask> s = new ArrayList<>(subtasks.values());
-        System.out.println("Список подзадач: " + s);
+    public ArrayList<Epic> getEpics() {
+        return new ArrayList<>(epics.values());
     }
 
-
-    public void printSubTasksByEpicId(int id) {
-        if (epics.isEmpty()) {
-            System.out.println("Список эпиков пуст.");
-        }
-        System.out.println(epics.get(id).getSubtaskIds());
-        }
+    public List<Integer> getSubTasksByEpicId(int id) {
+        return epics.get(id).getSubtaskIds();
     }
+}
 

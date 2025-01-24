@@ -14,8 +14,8 @@ public class Main {
         manager.createTask(task1);
         manager.createTask(task2);
 
-        Epic epic1 = new Epic("Первый эпик","Описание первого эпика", Status.NEW);
-        Epic epic2 = new Epic("Второй эпик","Описание второго эпика", Status.NEW);
+        Epic epic1 = new Epic("Первый эпик","Описание первого эпика");
+        Epic epic2 = new Epic("Второй эпик","Описание второго эпика");
 
         manager.createEpic(epic1);
         manager.createEpic(epic2);
@@ -49,8 +49,6 @@ public class Main {
         subtask3.setStatus(Status.DONE);
         manager.updateSubtask(subtask3);
 
-        manager.updateEpic(epic1);
-        manager.updateEpic(epic2);
 
         System.out.println(task1);
         System.out.println(task2);
@@ -64,8 +62,8 @@ public class Main {
         manager.deleteTask(1);
         manager.deleteEpic(3);
 
-        manager.printTasks();
-        manager.printEpics();
-        manager.printSubtasks();
+        System.out.println(manager.getTasks());
+        System.out.println(manager.getEpics()); ;
+        System.out.println(manager.getSubtasks());
     }
 }
