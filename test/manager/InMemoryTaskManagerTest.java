@@ -43,7 +43,7 @@ class InMemoryTaskManagerTest {
         assertEquals(task.getDescription(), task2.getDescription());
         assertEquals(task.getStatus(), task2.getStatus());
         assertEquals(task.getId(), task2.getId());
-        assertEquals(taskManager.getTask(task.getId()), taskManager.getTask(task2.getId()),"равенство задач с " +
+        assertEquals(taskManager.getTask(task.getId()), taskManager.getTask(task2.getId()), "равенство задач с " +
                 "одинаковым id");
     }
 
@@ -58,7 +58,7 @@ class InMemoryTaskManagerTest {
         assertEquals(epic.getDescription(), epic2.getDescription());
         assertEquals(epic.getId(), epic2.getId());
         assertEquals(epic.getStatus(), epic2.getStatus());
-        assertEquals(taskManager.getTask(epic.getId()), taskManager.getTask(epic2.getId()),"равенство задач с " +
+        assertEquals(taskManager.getTask(epic.getId()), taskManager.getTask(epic2.getId()), "равенство задач с " +
                 "одинаковым id");
     }
 
@@ -68,7 +68,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Epic 1", "Description 1");
         taskManager.createEpic(epic);
 
-        Subtask subtask = new Subtask("Subtask 1", "Description 1",Status.NEW, epic.getId());
+        Subtask subtask = new Subtask("Subtask 1", "Description 1", Status.NEW, epic.getId());
         Subtask subtask2 = taskManager.createSubtask(subtask);
 
         assertNotNull(subtask2);
@@ -77,7 +77,7 @@ class InMemoryTaskManagerTest {
         assertEquals(subtask.getStatus(), subtask2.getStatus());
         assertEquals(subtask.getId(), subtask2.getId());
         assertEquals(subtask.getEpicId(), subtask2.getEpicId());
-        assertEquals(taskManager.getTask(subtask.getId()), taskManager.getTask(subtask2.getId()),"равенство " +
+        assertEquals(taskManager.getTask(subtask.getId()), taskManager.getTask(subtask2.getId()), "равенство " +
                 "задач с одинаковым id");
     }
 
@@ -87,8 +87,8 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Epic 1", "Description 1");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask("Subtask 1", "Description 1",Status.NEW, epic.getId());
-        Subtask subtask2 = new Subtask("Subtask 2", "Description 2",Status.NEW, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask 1", "Description 1", Status.NEW, epic.getId());
+        Subtask subtask2 = new Subtask("Subtask 2", "Description 2", Status.NEW, epic.getId());
 
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
@@ -117,8 +117,8 @@ class InMemoryTaskManagerTest {
 
         List<Task> history = taskManager.getHistory();
 
-        assertEquals(3, history.size(),"Проверка количества просмотров в истории");
-        assertEquals(task, history.get(0),"Проверка порядка сохранения задач в историю просмотров");
+        assertEquals(3, history.size(), "Проверка количества просмотров в истории");
+        assertEquals(task, history.get(0), "Проверка порядка сохранения задач в историю просмотров");
         assertEquals(epic, history.get(1));
         assertEquals(subtask, history.get(2));
     }
@@ -163,7 +163,7 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    void deleteTaskTest(){
+    void deleteTaskTest() {
         Task task = new Task("Task 1", "Description 1", Status.NEW);
         Task task2 = new Task("Task 2", "Description 2", Status.NEW);
         taskManager.createTask(task);

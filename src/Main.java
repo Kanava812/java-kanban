@@ -57,7 +57,6 @@ public class Main {
         manager.getSubTask(subtask3.getId());
 
 
-
         task1.setStatus(Status.IN_PROGRESS);
         manager.updateTask(task1);
         task2.setStatus(Status.IN_PROGRESS);
@@ -109,7 +108,7 @@ public class Main {
             System.out.println(subtask);
         }
 
-        System.out.println("История("+manager.getHistory().size()+"):");
+        System.out.println("История(" + manager.getHistory().size() + "):");
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }

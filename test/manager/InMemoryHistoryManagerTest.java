@@ -17,6 +17,7 @@ class InMemoryHistoryManagerTest {
     void setUp() {
         historyManager = Managers.getDefaultHistoryManager();
     }
+
     @Test
     public void getDefaultHistoryManagerTest() {
         HistoryManager historyManager2 = Managers.getDefaultHistoryManager();
@@ -28,8 +29,8 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void addTasksToHistory() {
-        Task task = new Task(1,"Task 1", "Description 1",Status.NEW);
-        Task task2 = new Task(2,"Task 2", "Description 2", Status.NEW);
+        Task task = new Task(1, "Task 1", "Description 1", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description 2", Status.NEW);
         historyManager.addTask(task);
         historyManager.addTask(task2);
         List<Task> history = historyManager.getHistory();
@@ -46,9 +47,9 @@ class InMemoryHistoryManagerTest {
     @Test
     public void linkLastAndRemoveNodeTest() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        Task task1 = new Task(1,"Task 1", "Description 1",Status.NEW);
-        Task task2 = new Task(2,"Task 2", "Description 2",Status.NEW);
-        Task task3 = new Task(3,"Task 3", "Description 3", Status.IN_PROGRESS);
+        Task task1 = new Task(1, "Task 1", "Description 1", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description 2", Status.NEW);
+        Task task3 = new Task(3, "Task 3", "Description 3", Status.IN_PROGRESS);
         historyManager.addTask(task1);
         historyManager.addTask(task2);
         historyManager.addTask(task3);
@@ -92,10 +93,11 @@ class InMemoryHistoryManagerTest {
         Assertions.assertEquals(task2, history.get(1));
         Assertions.assertEquals(task3, history.get(2));
     }
+
     @Test
     void removeTaskFromHistoryTest() {
-        Task task1 = new Task(1,"Task 1", "Description 1", Status.NEW);
-        Task task2 = new Task(2,"Task 2", "Description 2", Status.NEW);
+        Task task1 = new Task(1, "Task 1", "Description 1", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description 2", Status.NEW);
 
         historyManager.addTask(task1);
         historyManager.addTask(task2);
