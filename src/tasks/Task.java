@@ -21,10 +21,6 @@ public  class Task {
         this.status = status;
     }
 
-    public Task getShapshot(){
-        return new Task(this.getId(),this.getName(),this.getDescription(),this.getStatus());
-    }
-
     public   String getName() { return name; }
 
     public String getDescription() {

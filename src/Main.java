@@ -1,5 +1,3 @@
-import manager.HistoryManager;
-import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import tasks.Epic;
@@ -50,9 +48,14 @@ public class Main {
         manager.getEpic(epic2.getId());
         manager.getSubTask(subtask1.getId());
         manager.getSubTask(subtask2.getId());
-        manager.getSubTask(subtask3.getId());
+        manager.getSubTask(subtask2.getId());
+        manager.getSubTask(subtask2.getId());
         manager.getTask(task1.getId());
         manager.getTask(task2.getId());
+        manager.getTask(task2.getId());
+        manager.getTask(task2.getId());
+        manager.getSubTask(subtask3.getId());
+
 
 
         task1.setStatus(Status.IN_PROGRESS);
@@ -68,6 +71,10 @@ public class Main {
         manager.updateSubtask(subtask3);
 
         printAllTasks(manager);
+
+        Task task3 = new Task("Задача третья", "Описание третьей задачи", Status.NEW);
+        manager.createTask(task3);
+        manager.getTask(task3.getId());
 
         manager.deleteTask(1);
         manager.deleteEpic(3);
@@ -102,12 +109,14 @@ public class Main {
             System.out.println(subtask);
         }
 
-        System.out.println("История:");
+        System.out.println("История("+manager.getHistory().size()+"):");
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
         System.out.println("-".repeat(100));
         System.out.println();
+
+
     }
 
 }

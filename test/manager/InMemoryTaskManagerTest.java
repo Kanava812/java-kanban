@@ -125,21 +125,6 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    void historyLimit() {
-        for (int i = 1; i <= 12; i++) {
-            taskManager.createTask(new Task("Task " + i, "Description " + i, Status.NEW));
-            taskManager.getTask(i);
-        }
-
-        List<Task> history = taskManager.getHistory();
-
-        assertEquals(10, history.size(),"Проверка максимального размера истории просмотров");
-        assertEquals(3, history.get(0).getId(),"Если просмотров больше 10, 1 в истории удаляется");
-        assertEquals(12, history.get(9).getId());
-    }
-
-
-    @Test
     void getTasksTest() {
         Task task = new Task("Task 1", "Description 1", Status.NEW);
         Task task2 = new Task("Task 2", "Description 2", Status.NEW);

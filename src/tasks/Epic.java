@@ -11,15 +11,6 @@ public class Epic extends Task {
         super(name, description, Status.NEW);
     }
 
-    public Epic(Integer id, String name, String description, Status status,List<Integer>subtaskIds) {
-        super(id,name, description, status);
-        this.subtaskIds=subtaskIds;
-    }
-
-    @Override
-    public Epic getShapshot(){
-        return new Epic(this.getId(),this.getName(),this.getDescription(),this.getStatus(),this.getSubtaskIds());
-    }
 
     public List<Integer> getSubtaskIds() {
         return subtaskIds;
