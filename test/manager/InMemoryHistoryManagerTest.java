@@ -5,8 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Status;
 import tasks.Task;
+
 import java.util.List;
-import java.util.Map;
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -44,34 +46,6 @@ class InMemoryHistoryManagerTest {
 
     }
 
-    @Test
-    public void linkLastAndRemoveNodeTest() {
-        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        Task task1 = new Task(1, "Task 1", "Description 1", Status.NEW);
-        Task task2 = new Task(2, "Task 2", "Description 2", Status.NEW);
-        Task task3 = new Task(3, "Task 3", "Description 3", Status.IN_PROGRESS);
-        historyManager.addTask(task1);
-        historyManager.addTask(task2);
-        historyManager.addTask(task3);
-
-        Map<Integer, Node> historyMap = historyManager.getHistoryMap();
-
-        Assertions.assertNotNull(historyMap.get(task1.getId()).next);
-        Assertions.assertNull(historyMap.get(task1.getId()).prev);
-        Assertions.assertNull(historyMap.get(task3.getId()).next);
-        Assertions.assertNotNull(historyMap.get(task3.getId()).prev);
-        Assertions.assertEquals(historyMap.get(task1.getId()).next, historyMap.get(task2.getId()));
-        Assertions.assertEquals(historyMap.get(task2.getId()).prev, historyMap.get(task1.getId()));
-        assertEquals(3, historyMap.size());
-
-        historyManager.remove(task2.getId());
-
-        assertEquals(2, historyMap.size());
-        Assertions.assertTrue(historyManager.getHistoryMap().containsKey(task1.getId()));
-        Assertions.assertFalse(historyManager.getHistoryMap().containsKey(task2.getId()));
-        Assertions.assertEquals(historyMap.get(task1.getId()).next, historyMap.get(task3.getId()));
-        Assertions.assertEquals(historyMap.get(task3.getId()).prev, historyMap.get(task1.getId()));
-    }
 
     @Test
     public void addTaskTest() {

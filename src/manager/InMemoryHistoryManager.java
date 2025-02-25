@@ -77,10 +77,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         return getTasks();
     }
 
-    public Map<Integer, Node> getHistoryMap() {
 
-        return nodeMap;
+    public static class Node {
+        Task task;
+        Node next;
+        Node prev;
+
+        public Node(Task task) {
+            this.task = task;
+        }
     }
-
 }
 
