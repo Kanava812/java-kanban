@@ -1,16 +1,47 @@
+import file.ManagerSaveException;
 import manager.Managers;
 import manager.TaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Task;
 import tasks.Subtask;
+import java.io.File;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
+
 
 public class Main {
+    private static final String FILE_NAME = "src/resourses/storage.csv";
+
     public static void main(String[] args) {
-        TaskManager manager = Managers.getDefaultTaskManager();
 
-        printInPreviousSprint(manager);
+        File fileStorage = createFile(FILE_NAME);
+        TaskManager manager = Managers.getDefaultTaskManager(fileStorage);
 
+        try {
+
+            printInPreviousSprint(manager);
+
+        } catch (ManagerSaveException exception) {
+            System.out.println("Перезапустите main()");
+        }
+
+        try {
+            System.out.println(Files.readString(fileStorage.toPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static File createFile(String fileName) {
+        try {
+            return Files.createFile(Paths.get(fileName)).toFile();
+
+        } catch (IOException e) {
+            System.out.println("Файл для хранилища не создан." + e.getMessage());
+        }
+        throw new UnsupportedOperationException("К сожалению файл не создан");
     }
 
     private static void printInPreviousSprint(TaskManager manager) {
@@ -87,6 +118,7 @@ public class Main {
         manager.getTask(task2.getId());
 
         printAllTasks(manager);
+
     }
 
     private static void printAllTasks(TaskManager manager) {
