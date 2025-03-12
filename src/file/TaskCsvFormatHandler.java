@@ -6,37 +6,25 @@ public class TaskCsvFormatHandler {
     public static final String DELIMITER = ",";
     public static final String HEADER = "id,type,name,status,description,epic";
 
-    public static String getHeader(){
+    public static String getHeader() {
         return HEADER;
     }
+
     public static String toString(Task task) {
-
-        return  task.getId()+DELIMITER+
-                task.getType()+DELIMITER+
-                task.getName()+DELIMITER+
-                task.getStatus()+DELIMITER+
-                task.getDescription()
-        ;
+        return task.getId() + DELIMITER + task.getType() + DELIMITER + task.getName() + DELIMITER + task.getStatus()
+                + DELIMITER + task.getDescription();
     }
+
     public static String toString(Epic epic) {
-
-        return  epic.getId()+DELIMITER+
-                epic.getType()+DELIMITER+
-                epic.getName()+DELIMITER+
-                epic.getStatus()+DELIMITER+
-                epic.getDescription()
-        ;
+        return epic.getId() + DELIMITER + epic.getType() + DELIMITER + epic.getName() + DELIMITER + epic.getStatus()
+                + DELIMITER + epic.getDescription();
     }
+
     public static String toString(Subtask subtask) {
-
-        return  subtask.getId()+DELIMITER+
-                subtask.getType()+DELIMITER+
-                subtask.getName()+DELIMITER+
-                subtask.getStatus()+DELIMITER+
-                subtask.getDescription()+DELIMITER+
-                subtask.getEpicId()
-        ;
+        return subtask.getId() + DELIMITER + subtask.getType() + DELIMITER + subtask.getName() + DELIMITER
+                + subtask.getStatus() + DELIMITER + subtask.getDescription() + DELIMITER + subtask.getEpicId();
     }
+
     public static Task fromString(String value) {
         String[] parts = value.split(DELIMITER);
         int id = Integer.parseInt(parts[0]);
@@ -47,12 +35,12 @@ public class TaskCsvFormatHandler {
 
         switch (type) {
             case TASK:
-                return new Task(id,name, description, status);
+                return new Task(id, name, description, status);
             case EPIC:
-                return new Epic(id,name, description, status);
+                return new Epic(id, name, description, status);
             case SUBTASK:
                 int epicId = Integer.parseInt(parts[5]);
-                return new Subtask(id,name, description,  status, epicId);
+                return new Subtask(id, name, description, status, epicId);
             default:
                 throw new IllegalArgumentException("Неправильный тип задачи: " + type);
         }
