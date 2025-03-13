@@ -11,7 +11,6 @@ import java.util.*;
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
 
-
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
@@ -43,19 +42,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         final FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             final String[] lines = Files.readString(file.toPath()).split("\n");
+            int loadedId = 0;
             for (int i = 1; i < lines.length; i++) {
                 String line = lines[i];
                 Task task = TaskCsvFormatHandler.fromString(line);
-
-                if (task instanceof Epic) {
-                    manager.createEpic((Epic) task);
-                } else if (task instanceof Subtask) {
-                    manager.createSubtask((Subtask) task);
-                } else {
+                if (task.getType() == Type.TASK) {
                     manager.createTask(task);
+                } else if (task.getType() == Type.EPIC) {
+                    manager.createEpic((Epic) task);
+                } else if (task.getType() == Type.SUBTASK) {
+                    manager.createSubtask((Subtask) task);
+                }
+                if (loadedId < task.getId()) {
+                    loadedId = task.getId();
                 }
             }
-
+            manager.generatedId = loadedId;
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки данных из файла " + file.getName() + ".", e);
         }
@@ -151,5 +153,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         saveToFile();
     }
-
 }

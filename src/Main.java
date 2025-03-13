@@ -20,24 +20,28 @@ public class Main {
         TaskManager manager = Managers.getDefaultTaskManager(fileStorage);
 
         try {
-
             printInPreviousSprint(manager);
+            System.out.printf("Содержимое файла:%n%s", Files.readString(fileStorage.toPath()));
+            System.out.println("-".repeat(100));
+            System.out.println();
+            System.out.printf("Задачи, загруженные из файла: %n%s%n%s%n%s%n", manager.getTasks(), manager.getEpics(),
+                    manager.getSubtasks());
+            System.out.println("-".repeat(100));
+            System.out.println();
 
-        } catch (ManagerSaveException exception) {
+        } catch (ManagerSaveException | IOException exception) {
             System.out.println("Перезапустите main()");
         }
-
-        try {
-            System.out.println(Files.readString(fileStorage.toPath()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileStorage.delete();
     }
 
     private static File createFile(String fileName) {
         try {
-            return Files.createFile(Paths.get(fileName)).toFile();
-
+            if (Files.exists(Paths.get(fileName))) {
+                return Paths.get("src/resourses/storage.csv").toFile();
+            } else {
+                return Files.createFile(Paths.get(fileName)).toFile();
+            }
         } catch (IOException e) {
             System.out.println("Файл для хранилища не создан." + e.getMessage());
         }
@@ -86,7 +90,6 @@ public class Main {
         manager.getTask(task2.getId());
         manager.getTask(task2.getId());
         manager.getSubTask(subtask3.getId());
-
 
         task1.setStatus(Status.IN_PROGRESS);
         manager.updateTask(task1);
@@ -146,8 +149,5 @@ public class Main {
         }
         System.out.println("-".repeat(100));
         System.out.println();
-
-
     }
-
 }

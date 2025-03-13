@@ -35,12 +35,12 @@ public class TaskCsvFormatHandler {
 
         switch (type) {
             case TASK:
-                return new Task(id, name, description, status);
+                return new Task(id, type, name, description, status);
             case EPIC:
-                return new Epic(id, name, description, status);
+                return new Epic(id, type, name, description, status);
             case SUBTASK:
                 int epicId = Integer.parseInt(parts[5]);
-                return new Subtask(id, name, description, status, epicId);
+                return new Subtask(id, type, name, description, status, epicId);
             default:
                 throw new IllegalArgumentException("Неправильный тип задачи: " + type);
         }
