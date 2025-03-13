@@ -9,12 +9,12 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private final HistoryManager historyManager = Managers.getDefaultHistoryManager();
-    private int generatedId = 0;
+    protected int generatedId = 0;
 
     private int generateId() {
         return ++generatedId;
@@ -24,11 +24,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task createTask(Task task) {
         if (Objects.nonNull(task.getId())) {
-            return null;
+            tasks.put(task.getId(), task);
+        } else {
+            int newId = generateId();
+            task.setId(newId);
+            tasks.put(task.getId(), task);
         }
-        int newId = generateId();
-        task.setId(newId);
-        tasks.put(task.getId(), task);
         return task;
     }
 
@@ -49,11 +50,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic createEpic(Epic epic) {
         if (Objects.nonNull(epic.getId())) {
-            return null;
+            epics.put(epic.getId(), epic);
+        } else {
+            int newId = generateId();
+            epic.setId(newId);
+            epics.put(epic.getId(), epic);
         }
-        int newId = generateId();
-        epic.setId(newId);
-        epics.put(epic.getId(), epic);
         return epic;
     }
 
@@ -95,14 +97,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask createSubtask(Subtask subtask) {
         if (Objects.nonNull(subtask.getId())) {
-            return null;
+            subtasks.put(subtask.getId(), subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubtaskIds().add(subtask.getId());
+        } else {
+            int newId = generateId();
+            subtask.setId(newId);
+            subtasks.put(subtask.getId(), subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubtaskIds().add(newId);
+            updateEpic(epic);
         }
-        int newId = generateId();
-        subtask.setId(newId);
-        subtasks.put(subtask.getId(), subtask);
-        Epic epic = epics.get(subtask.getEpicId());
-        epic.getSubtaskIds().add(newId);
-        updateEpic(epic);
         return subtask;
 
     }
