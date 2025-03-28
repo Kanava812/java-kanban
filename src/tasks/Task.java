@@ -32,8 +32,8 @@ public  class Task {
         this.duration = duration;
     }
 
-    public Task(Integer id, Type type, String name, String description, Status status, LocalDateTime startTime
-            , Duration duration) {
+    public Task(Integer id, Type type, String name, String description, Status status, LocalDateTime startTime,
+                Duration duration) {
         this.id = id;
         this.name = name;
         this.description = description;
