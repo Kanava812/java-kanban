@@ -16,6 +16,7 @@ public class Main {
 
     private static final String FILE_NAME = "src/resourses/storage.csv";
 
+
     public static void main(String[] args) {
 
         File fileStorage = createFile(FILE_NAME);
@@ -37,6 +38,7 @@ public class Main {
         fileStorage.delete();
     }
 
+
     private static File createFile(String fileName) {
         try {
             if (Files.exists(Paths.get(fileName))) {
@@ -49,6 +51,7 @@ public class Main {
         }
         throw new UnsupportedOperationException("К сожалению файл не создан");
     }
+
 
     private static void printInPreviousSprint(TaskManager manager) {
         Task task1 = new Task("Задача первая", "Описание первой задачи", Status.NEW,
@@ -136,6 +139,7 @@ public class Main {
         printAllTasks(manager);
 
     }
+
 
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");

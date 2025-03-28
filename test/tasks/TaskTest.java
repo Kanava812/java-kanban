@@ -21,6 +21,4 @@ class TaskTest {
         assertEquals(task, task2,"Задачи с одинаковым id должны быть одинаковыми");
 
     }
-
-
 }

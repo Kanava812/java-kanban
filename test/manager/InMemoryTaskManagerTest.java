@@ -46,6 +46,8 @@ class InMemoryTaskManagerTest {
         assertEquals(task.getDescription(), task2.getDescription());
         assertEquals(task.getStatus(), task2.getStatus());
         assertEquals(task.getId(), task2.getId());
+        assertEquals(task.getStartTime(), task2.getStartTime());
+        assertEquals(task.getDuration(), task2.getDuration());
         assertEquals(taskManager.getTask(task.getId()), taskManager.getTask(task2.getId()), "равенство задач с " +
                 "одинаковым id");
     }
@@ -71,6 +73,10 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Epic 1", "Description 1");
         taskManager.createEpic(epic);
 
+        assertNull(epic.getStartTime());
+        assertEquals(Duration.ZERO, epic.getDuration());
+
+
         Subtask subtask = new Subtask("Subtask 1", "Description 1", Status.NEW,
                 LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1), epic.getId());
         Subtask subtask2 = taskManager.createSubtask(subtask);
@@ -80,6 +86,10 @@ class InMemoryTaskManagerTest {
         assertEquals(subtask.getDescription(), subtask2.getDescription());
         assertEquals(subtask.getStatus(), subtask2.getStatus());
         assertEquals(subtask.getId(), subtask2.getId());
+        assertEquals(subtask.getStartTime(), subtask2.getStartTime());
+        assertEquals(subtask.getDuration(), subtask2.getDuration());
+        assertEquals(subtask.getStartTime(), epic.getStartTime());
+        assertEquals(subtask.getDuration(), epic.getDuration());
         assertEquals(subtask.getEpicId(), subtask2.getEpicId());
         assertEquals(taskManager.getTask(subtask.getId()), taskManager.getTask(subtask2.getId()), "равенство " +
                 "задач с одинаковым id");
@@ -210,6 +220,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, taskManager.getSubtasks().size());
     }
 
+
     @Test
     void deleteSubTaskTest() {
         Epic epic = new Epic("Epic 1", "Description 1");
@@ -226,6 +237,7 @@ class InMemoryTaskManagerTest {
         assertEquals(1, taskManager.getSubtasks().size());
         assertEquals(1, taskManager.getEpics().size());
     }
+
 
     @Test
     void deleteAllTasksTest() {
@@ -282,18 +294,19 @@ class InMemoryTaskManagerTest {
         Assertions.assertTrue(taskManager.isIntersect(task2));
     }
 
+
     @Test
     public void prioritizedTasksTest() {
         Task task = new Task("Task 1", "Description 1", Status.NEW,
-                LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1));
-        Task task2 = new Task("Task 2", "Description 2", Status.NEW,
                 LocalDateTime.now().minusMinutes(50), Duration.ofMinutes(1));
+        Task task2 = new Task("Task 2", "Description 2", Status.NEW,
+                LocalDateTime.now().plusMinutes(200), Duration.ofMinutes(1));
         taskManager.createTask(task);
         taskManager.createTask(task2);
         Epic epic = new Epic("Epic 1", "Description 1");
         taskManager.createEpic(epic);
         Subtask subtask = new Subtask("SubTask 1", "Description 1", Status.NEW,
-                LocalDateTime.now().plusMinutes(200), Duration.ofMinutes(1), epic.getId());
+                LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1), epic.getId());
         Subtask subtask2 = new Subtask("SubTask 2", "Description 2", Status.NEW, LocalDateTime.now(),
                 Duration.ofMinutes(1), epic.getId());
         taskManager.createSubtask(subtask);
@@ -302,7 +315,16 @@ class InMemoryTaskManagerTest {
         TreeSet<Task> prioritized = taskManager.getPrioritizedTasks();
 
         assertNotNull(prioritized);
+        assertEquals(4, prioritized.size());
+        assertEquals("SubTask 1", prioritized.getFirst().getName());
+        assertEquals("Task 2", prioritized.getLast().getName());
+
+        taskManager.deleteSubtask(4);
+        assertEquals(3, prioritized.size());
         assertEquals("Task 1", prioritized.getFirst().getName());
-        assertEquals("SubTask 1", prioritized.getLast().getName());
+
+        taskManager.deleteAllSubtasks();
+        taskManager.deleteAllTasks();
+        assertEquals(0, prioritized.size());
     }
 }

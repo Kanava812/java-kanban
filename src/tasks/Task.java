@@ -23,6 +23,7 @@ public  class Task {
         this.duration = duration;
     }
 
+
     public Task(Integer id, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
@@ -32,7 +33,9 @@ public  class Task {
         this.duration = duration;
     }
 
+
     public Task(Integer id, Type type, String name, String description, Status status, LocalDateTime startTime,
+
                 Duration duration) {
         this.id = id;
         this.name = name;
@@ -43,10 +46,12 @@ public  class Task {
         this.duration = duration;
     }
 
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
+
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -54,54 +59,67 @@ public  class Task {
         this.status = status;
     }
 
+
     public String getName() {
         return name;
     }
+
 
     public String getDescription() {
         return description;
     }
 
+
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public Integer getId() {
         return id;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     public Status getStatus() {
         return status;
     }
 
+
     public void setStatus(Status status) {
         this.status = status;
     }
+
 
     public Type getType() {
         return type;
     }
 
+
     public LocalDateTime getStartTime() {
         return startTime;
     }
+
 
     public Duration getDuration() {
         return duration;
     }
 
+
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
+
 
     public LocalDateTime getEndTime() {
         if (startTime == null) return null;
         return startTime.plus(duration);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -110,10 +128,12 @@ public  class Task {
         return Objects.equals(id, task.id);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
 
     @Override
     public String toString() {

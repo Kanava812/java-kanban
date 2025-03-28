@@ -22,6 +22,7 @@ class InMemoryHistoryManagerTest {
         historyManager = Managers.getDefaultHistoryManager();
     }
 
+
     @Test
     public void getDefaultHistoryManagerTest() {
         HistoryManager historyManager2 = Managers.getDefaultHistoryManager();
@@ -30,6 +31,7 @@ class InMemoryHistoryManagerTest {
         assertNotEquals(historyManager, historyManager2, "Вызов getDefaultHistoryManager() должен возвращать " +
                 "новый экземпляр HistoryManager");
     }
+
 
     @Test
     void addTasksToHistory() {
@@ -74,6 +76,7 @@ class InMemoryHistoryManagerTest {
         Assertions.assertEquals(task2, history.get(1));
         Assertions.assertEquals(task3, history.get(2));
     }
+
 
     @Test
     void removeTaskFromHistoryTest() {

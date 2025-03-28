@@ -12,14 +12,17 @@ public class Subtask extends Task {
         this.type = Type.SUBTASK;
     }
 
+
     public Subtask(int id, Type type, String name, String description, Status status, LocalDateTime startTime, Duration duration, int epicId) {
         super(id, type,name, description, status, startTime, duration);
         this.epicId = epicId;
     }
 
+
     public Integer getEpicId() {
         return epicId;
     }
+
 
     @Override
     public String toString() {

@@ -20,14 +20,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
 
-   private File tempFile;
+    private File tempFile;
+
     FileBackedTaskManager manager;
+
 
     @BeforeEach
     void setUp() throws IOException {
         tempFile = File.createTempFile("storage", ".csv");
         manager = new FileBackedTaskManager(tempFile);
     }
+
 
     @AfterEach
     void tearDown() {
@@ -36,7 +39,7 @@ public class FileBackedTaskManagerTest {
 
 
     @Test
-    public void saveAndLoadEmptyFileTest(){
+    public void saveAndLoadEmptyFileTest() {
         manager.saveToFile();
 
         assertTrue(Files.exists(tempFile.toPath()));
@@ -45,11 +48,12 @@ public class FileBackedTaskManagerTest {
         assertTrue(manager.getSubtasks().isEmpty());
     }
 
+
     @Test
     public void saveLoadAndRemoveTasksTest() throws Exception {
         Task task1 = new Task("Task 1", "Description 1", Status.NEW,
                 LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1));
-        Task task2 = new Task("Task 2", "Description 2", Status.NEW,LocalDateTime.now().minusMinutes(50),
+        Task task2 = new Task("Task 2", "Description 2", Status.NEW, LocalDateTime.now().minusMinutes(50),
                 Duration.ofMinutes(1));
         Epic epic1 = new Epic("Epic 1", "Description 2");
         manager.createTask(task1);
@@ -63,7 +67,7 @@ public class FileBackedTaskManagerTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertEquals(5, lines.size(), "Заголовок и 4 задачи");
-        assertEquals(TaskCsvFormatHandler.getHeader(), lines.get(0));
+        assertEquals(TaskCsvFormatHandler.getHeader(), lines.getFirst());
         assertTrue(lines.contains(TaskCsvFormatHandler.toString(task1)));
         assertTrue(lines.contains(TaskCsvFormatHandler.toString(task2)));
         assertTrue(lines.contains(TaskCsvFormatHandler.toString(epic1)));

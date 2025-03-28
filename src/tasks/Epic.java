@@ -38,8 +38,12 @@ public class Epic extends Task {
 
 
     public Duration getDuration() {
-        return Duration.between(getStartTime(), getEndTime());
+        return epicSubtasks.stream()
+                .filter(Objects::nonNull)
+                .map(Subtask::getDuration)
+                .reduce(Duration.ZERO, Duration::plus);
     }
+
 
     public LocalDateTime getStartTime() {
         return epicSubtasks.stream()
@@ -57,6 +61,7 @@ public class Epic extends Task {
         }
         return subtaskIds;
     }
+
 
     public List<Subtask> getEpicSubtasks() {
         return epicSubtasks;
