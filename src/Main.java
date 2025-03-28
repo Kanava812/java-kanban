@@ -9,9 +9,11 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.IOException;
-
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
+
     private static final String FILE_NAME = "src/resourses/storage.csv";
 
     public static void main(String[] args) {
@@ -49,8 +51,10 @@ public class Main {
     }
 
     private static void printInPreviousSprint(TaskManager manager) {
-        Task task1 = new Task("Задача первая", "Описание первой задачи", Status.NEW);
-        Task task2 = new Task("Задача вторая", "Описание второй задачи", Status.NEW);
+        Task task1 = new Task("Задача первая", "Описание первой задачи", Status.NEW,
+                LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1));
+        Task task2 = new Task("Задача вторая", "Описание второй задачи", Status.NEW,
+                LocalDateTime.now().minusMinutes(450), Duration.ofMinutes(3));
 
         manager.createTask(task1);
         Task task1Modified = manager.createTask(task2);
@@ -66,12 +70,16 @@ public class Main {
         Epic epic1 = new Epic("Первый эпик", "Описание первого эпика");
         Epic epic2 = new Epic("Второй эпик", "Описание второго эпика");
 
+
         manager.createEpic(epic1);
         manager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("Первая подзадача первого эпика", "Описание первой подзадачи первого эпика", Status.NEW, epic1.getId());
-        Subtask subtask2 = new Subtask("Вторая подзадача первого эпика", "Описание второй подзадачи первого эпика", Status.NEW, epic1.getId());
-        Subtask subtask3 = new Subtask("Первая подзадача второго эпика", "Описание первой подзадачи второго эпика", Status.NEW, epic2.getId());
+        Subtask subtask1 = new Subtask("Первая подзадача первого эпика",
+                "Описание первой подзадачи первого эпика", Status.NEW, LocalDateTime.now().minusMinutes(400), Duration.ofMinutes(1), epic1.getId());
+        Subtask subtask2 = new Subtask("Вторая подзадача первого эпика",
+                "Описание второй подзадачи первого эпика", Status.NEW, LocalDateTime.now().minusMinutes(350), Duration.ofMinutes(10), epic1.getId());
+        Subtask subtask3 = new Subtask("Первая подзадача второго эпика",
+                "Описание первой подзадачи второго эпика", Status.NEW, LocalDateTime.now().minusMinutes(300), Duration.ofMinutes(6), epic2.getId());
 
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
@@ -105,13 +113,15 @@ public class Main {
 
         printAllTasks(manager);
 
-        Task task3 = new Task("Задача третья", "Описание третьей задачи", Status.NEW);
+        Task task3 = new Task("Задача третья", "Описание третьей задачи", Status.NEW,
+                LocalDateTime.now().minusMinutes(220), Duration.ofMinutes(15));
         manager.createTask(task3);
         manager.getTask(task3.getId());
 
         manager.deleteTask(1);
-        manager.deleteEpic(3);
-        manager.deleteSubtask(5);
+        manager.deleteEpic(4);
+        manager.deleteSubtask(6);
+
         manager.getEpic(epic1.getId());
         manager.getEpic(epic2.getId());
         manager.getSubTask(subtask1.getId());
@@ -132,7 +142,7 @@ public class Main {
         System.out.println("Эпики:");
         for (Task epic : manager.getEpics()) {
             System.out.println(epic);
-            for (Task task : manager.getSubTasksByEpic((Epic) epic)) {
+            for (Task task : ((Epic) epic).getEpicSubtasks()) {
                 System.out.println("--> " + task);
             }
 

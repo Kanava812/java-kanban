@@ -12,10 +12,11 @@ import tasks.Status;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 public class FileBackedTaskManagerTest {
 
@@ -46,13 +47,16 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void saveLoadAndRemoveTasksTest() throws Exception {
-        Task task1 = new Task("Task 1", "Description 1", Status.NEW);
-        Task task2 = new Task("Task 2", "Description 2", Status.NEW);
+        Task task1 = new Task("Task 1", "Description 1", Status.NEW,
+                LocalDateTime.now().minusMinutes(500), Duration.ofMinutes(1));
+        Task task2 = new Task("Task 2", "Description 2", Status.NEW,LocalDateTime.now().minusMinutes(50),
+                Duration.ofMinutes(1));
         Epic epic1 = new Epic("Epic 1", "Description 2");
         manager.createTask(task1);
         manager.createTask(task2);
         manager.createEpic(epic1);
-        Subtask subtask1 = new Subtask("SubTask 1", "Description 1", Status.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("SubTask 1", "Description 1", Status.NEW,
+                LocalDateTime.now().minusMinutes(200), Duration.ofMinutes(1), epic1.getId());
         manager.createSubtask(subtask1);
 
         assertTrue(Files.exists(tempFile.toPath()));

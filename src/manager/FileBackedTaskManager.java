@@ -7,6 +7,7 @@ import tasks.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -18,21 +19,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     protected void saveToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(TaskCsvFormatHandler.getHeader() + "\n");
-            for (Map.Entry<Integer, Task> entry : this.tasks.entrySet()) {
-                Task task = entry.getValue();
-                writer.write(TaskCsvFormatHandler.toString(task) + "\n");
+            String tasksString= tasks.values().stream()
+                    .map(task -> TaskCsvFormatHandler.toString(task)  + "\n")
+                    .collect(Collectors.joining());
 
-            }
-            for (Map.Entry<Integer, Epic> entry : this.epics.entrySet()) {
-                Epic epic = entry.getValue();
-                writer.write(TaskCsvFormatHandler.toString(epic) + "\n");
+            String epicsString= epics.values().stream()
+                    .filter(epic -> epic.getStartTime() != null)
+                    .map(epic -> TaskCsvFormatHandler.toString(epic)  + "\n")
+                    .collect(Collectors.joining());
 
-            }
-            for (Map.Entry<Integer, Subtask> entry : this.subtasks.entrySet()) {
-                Subtask subtask = entry.getValue();
-                writer.write(TaskCsvFormatHandler.toString(subtask) + "\n");
+            String subtasksString= subtasks.values().stream()
+                    .map(subtask -> TaskCsvFormatHandler.toString(subtask)  + "\n")
+                    .collect(Collectors.joining());
 
-            }
+            writer.write(tasksString+epicsString+subtasksString);
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка сохранения задач в файл.", e);
         }
@@ -46,12 +46,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (int i = 1; i < lines.length; i++) {
                 String line = lines[i];
                 Task task = TaskCsvFormatHandler.fromString(line);
-                if (task.getType() == Type.TASK) {
-                    manager.createTask(task);
-                } else if (task.getType() == Type.EPIC) {
-                    manager.createEpic((Epic) task);
-                } else if (task.getType() == Type.SUBTASK) {
-                    manager.createSubtask((Subtask) task);
+                switch (task.getType()) {
+                   case Type.TASK -> manager.createTask(task);
+                   case Type.EPIC -> manager.createEpic((Epic) task);
+                   case Type.SUBTASK -> manager.createSubtask((Subtask) task);
                 }
                 if (loadedId < task.getId()) {
                     loadedId = task.getId();
@@ -64,10 +62,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return manager;
     }
 
-
     @Override
     public Task createTask(Task task) {
         Task t = super.createTask(task);
+
         saveToFile();
         return t;
     }
