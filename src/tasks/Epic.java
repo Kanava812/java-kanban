@@ -10,12 +10,13 @@ import java.util.Objects;
 public class Epic extends Task {
 
     private final List<Subtask> epicSubtasks = new ArrayList<>();
-    private  LocalDateTime endTime;
+    private LocalDateTime endTime;
 
     public Epic(int id, Type type, String name, String description, Status status, LocalDateTime startTime,
                 Duration duration) {
         super(id, type, name, description, status, startTime, duration);
     }
+
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
@@ -34,6 +35,8 @@ public class Epic extends Task {
         endTime = getEndTime();
         this.duration = getDuration();
     }
+
+
     public Duration getDuration() {
         return Duration.between(getStartTime(), getEndTime());
     }
@@ -44,28 +47,28 @@ public class Epic extends Task {
                 .map(Subtask::getStartTime)
                 .min(LocalDateTime::compareTo)
                 .orElse(null);
-
-
     }
 
 
     public List<Integer> getSubtaskIds() {
-        List<Integer>subtaskIds=new ArrayList<>();
-        for (Subtask s : epicSubtasks){
+        List<Integer> subtaskIds = new ArrayList<>();
+        for (Subtask s : epicSubtasks) {
             subtaskIds.add(getSubtaskId(s));
         }
         return subtaskIds;
     }
 
-    public List<Subtask> getEpicSubtasks(){
+    public List<Subtask> getEpicSubtasks() {
         return epicSubtasks;
     }
-     public Integer getSubtaskId(Subtask subtask){
+
+
+    public Integer getSubtaskId(Subtask subtask) {
         return subtask.getId();
-     }
+    }
 
 
-     public LocalDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return epicSubtasks.stream()
                 .filter(Objects::nonNull)
                 .map(Subtask::getEndTime)
