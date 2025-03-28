@@ -15,9 +15,8 @@ public class TaskCsvFormatHandler {
 
     public static String toString(Task task) {
         return task.getId() + DELIMITER + task.getType() + DELIMITER + task.getName() + DELIMITER + task.getStatus()
-                + DELIMITER + task.getDescription()+ DELIMITER +task.getStartTime() + DELIMITER
-                + task.getDuration().toMinutes()+ DELIMITER
-                + (task instanceof Subtask ? ((Subtask) task).getEpicId() : "");
+                + DELIMITER + task.getDescription() + DELIMITER + task.getStartTime() + DELIMITER
+                + task.getDuration().toMinutes() + DELIMITER + (task instanceof Subtask ? ((Subtask) task).getEpicId() : "");
     }
 
 
@@ -30,16 +29,13 @@ public class TaskCsvFormatHandler {
         String description = parts[4];
         LocalDateTime startTime = LocalDateTime.parse(parts[5]);
         Duration duration = Duration.ofMinutes(Long.parseLong(parts[6]));
-        switch (type) {
-            case TASK:
-                return new Task(id, type, name, description, status, startTime, duration);
-            case EPIC:
-                return new Epic(id, type, name, description, status, startTime, duration);
-            case SUBTASK:
+        return switch (type) {
+            case TASK -> new Task(id, type, name, description, status, startTime, duration);
+            case EPIC -> new Epic(id, type, name, description, status, startTime, duration);
+            case SUBTASK -> {
                 int epicId = Integer.parseInt(parts[7]);
-                return new Subtask(id, type, name, description, status, startTime, duration, epicId);
-            default:
-                throw new IllegalArgumentException("Неправильный тип задачи: " + type);
-        }
+                yield new Subtask(id, type, name, description, status, startTime, duration, epicId);
+            }
+        };
     }
 }

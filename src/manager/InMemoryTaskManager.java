@@ -15,19 +15,10 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistoryManager();
     protected int generatedId = 0;
 
-
     private int generateId() {
         return ++generatedId;
     }
 
-
-    @Override
-    public void addToPrioritizedTasks(Task task) {
-        if (task.getStartTime() == null) {
-            return;
-        }
-        prioritizedTasks.add(task);
-    }
 
     public boolean isIntersect(Task task) {
         return getPrioritizedTasks().stream()
@@ -51,6 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return task;
     }
+
 
     @Override
     public Task updateTask(Task task) {
@@ -261,6 +253,16 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> getHistory() {
         return historyManager.getHistory();
     }
+
+
+    @Override
+    public void addToPrioritizedTasks(Task task) {
+        if (task.getStartTime() == null) {
+            return;
+        }
+        prioritizedTasks.add(task);
+    }
+
 
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
