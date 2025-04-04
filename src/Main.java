@@ -5,6 +5,8 @@ import tasks.Epic;
 import tasks.Status;
 import tasks.Task;
 import tasks.Subtask;
+import webserver.HttpTaskServer;
+
 import java.io.File;
 import java.nio.file.Paths;
 import java.nio.file.Files;
@@ -31,10 +33,15 @@ public class Main {
                     manager.getSubtasks());
             System.out.println("-".repeat(100));
             System.out.println();
+            HttpTaskServer httpTaskServer = new HttpTaskServer(manager);
+            httpTaskServer.start();
+            System.out.println("HTTP-сервер запущен на " + httpTaskServer.PORT + " порту!");
+            httpTaskServer.stop();
 
         } catch (ManagerSaveException | IOException exception) {
             System.out.println("Перезапустите main()");
         }
+
         fileStorage.delete();
     }
 

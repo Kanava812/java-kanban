@@ -143,7 +143,7 @@ public  class Task {
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
                 ", startTime=" + getStartTime() +
-                ", duration=" + getDuration() +
+                ", duration=" + getDuration().toMinutes() +
                 ", endTime=" + getEndTime() +
                 '}';
     }
