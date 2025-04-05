@@ -45,7 +45,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                             sendNotFound(httpExchange);
                         }
                     } else {
-                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendBadRequest(httpExchange);
                     }
                     break;
 
@@ -66,7 +66,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                         }
 
                     } else {
-                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendBadRequest(httpExchange);
                     }
                     break;
 
@@ -76,9 +76,11 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                         taskManager.deleteEpic(id);
                         sendText(httpExchange, "Эпик c id" + id + " успешно удален.", 200);
                     } else {
-                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendBadRequest(httpExchange);
                     }
                     break;
+                default:
+                    sendMethodNotAllowed(httpExchange);
             }
         } catch (Exception e) {
             sendExceptions(httpExchange, e.getMessage());

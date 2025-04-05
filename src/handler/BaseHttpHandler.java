@@ -13,8 +13,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public abstract class BaseHttpHandler {
-    TaskManager taskManager;
-    Gson gson;
+    protected TaskManager taskManager;
+    protected Gson gson;
 
     public BaseHttpHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
@@ -33,22 +33,23 @@ public abstract class BaseHttpHandler {
     }
 
     protected void sendNotFound(HttpExchange httpExchange) throws IOException {
-        String response = "Задача не найдена.";
-        httpExchange.sendResponseHeaders(404, 0);
-        httpExchange.getResponseBody().write(response.getBytes());
-        httpExchange.close();
+        sendText(httpExchange, "Нет данных.", 404);
     }
 
     protected void sendHasInteractions(HttpExchange httpExchange) throws IOException {
-        String response = "Задача пересекается с другой задачей.";
-        httpExchange.sendResponseHeaders(406, 0);
-        httpExchange.getResponseBody().write(response.getBytes());
-        httpExchange.close();
+        sendText(httpExchange, "Задача пересекается с другой задачей.", 406);
+    }
+
+    protected void sendBadRequest(HttpExchange httpExchange) throws IOException {
+        sendText(httpExchange, "Ошибка при обработке запроса.", 400);
+    }
+
+    protected void sendMethodNotAllowed(HttpExchange httpExchange) throws IOException {
+        sendText(httpExchange, "Метод не найден", 405);
     }
 
     protected void sendExceptions(HttpExchange httpExchange, String text) throws IOException {
-        httpExchange.sendResponseHeaders(500, 0);
-        httpExchange.getResponseBody().write(text.getBytes());
-        httpExchange.close();
+        sendText(httpExchange, text, 500);
+
     }
 }

@@ -9,15 +9,15 @@ import java.net.InetSocketAddress;
 
 public class HttpTaskServer {
     public static final int PORT = 8080;
-    static TaskManager taskManager = Managers.getDefaultTaskManager();
-    HttpServer httpServer;
+    private TaskManager taskManager;
+    private HttpServer httpServer;
 
     public HttpTaskServer(TaskManager taskManager) {
-        HttpTaskServer.taskManager = taskManager;
+        this.taskManager = taskManager;
     }
 
     public static void main(String[] args) throws IOException {
-        HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
+        HttpTaskServer httpTaskServer = new HttpTaskServer(Managers.getDefaultTaskManager());
         httpTaskServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
