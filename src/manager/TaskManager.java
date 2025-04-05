@@ -6,14 +6,17 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     Task createTask(Task task);
+
 
     Task updateTask(Task task);
 
 
     Epic createEpic(Epic epic);
+
 
     void updateEpic(Epic epic);
 
@@ -26,6 +29,7 @@ public interface TaskManager {
 
     void deleteTask(int id);
 
+
     void deleteEpic(int id);
 
 
@@ -36,6 +40,7 @@ public interface TaskManager {
 
 
     void deleteAllEpics();
+
 
     void deleteAllSubtasks();
 
@@ -51,13 +56,21 @@ public interface TaskManager {
 
     ArrayList<Task> getTasks();
 
+
     ArrayList<Subtask> getSubtasks();
+
 
     ArrayList<Epic> getEpics();
 
-    List<Subtask> getSubTasksByEpic(Epic epic);
 
     List<Task> getHistory();
 
-}
 
+    void addToPrioritizedTasks(Task task);
+
+
+    boolean isIntersect(Task task);
+
+
+    TreeSet<Task> getPrioritizedTasks();
+}
